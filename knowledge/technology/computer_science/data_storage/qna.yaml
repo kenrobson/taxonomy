@@ -8,14 +8,14 @@ seed_examples:
       management for attached disk storage. In simpler terms, the IBM SAN
       Volume Controller manages several back-end storage controllers or
       locally attached disks.
-      
+
       IBM SAN Volume Controller maps the physical storage within those
       controllers or storage systems into logical disk images, or *volumes*,
       that can be seen by application servers and workstations in the SAN. It
       logically sits between hosts and storage systems. It presents itself to
       hosts as the storage provider (*target*) and to storage systems as one
       large host (*initiator*).
-      
+
       The SAN is zoned such that the application servers cannot "see" the
       back-end storage or controller. This configuration prevents any possible
       conflict between IBM SAN Volume Controller and the application servers
@@ -181,6 +181,7 @@ document_outline: |
   Virtualize 8.6. These practices are based on field experience.
 document:
   repo: https://github.com/kenrobson/taxonomy
-  commit: 
+  commit: 073b11b307d5ac5bd7b6c210155cc6437d0d7cc0
   patterns:
-  - storage_best_practices.xml
+    - storage_best_practices.xml
+    
