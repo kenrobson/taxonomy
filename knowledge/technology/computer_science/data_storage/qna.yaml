@@ -1,0 +1,186 @@
+version: 3
+domain: data_storage
+created_by: kenrobson
+seed_examples:
+  - context: |
+      #### Components
+      IBM SAN Volume Controller provides block-level aggregation and volume
+      management for attached disk storage. In simpler terms, the IBM SAN
+      Volume Controller manages several back-end storage controllers or
+      locally attached disks.
+      
+      IBM SAN Volume Controller maps the physical storage within those
+      controllers or storage systems into logical disk images, or *volumes*,
+      that can be seen by application servers and workstations in the SAN. It
+      logically sits between hosts and storage systems. It presents itself to
+      hosts as the storage provider (*target*) and to storage systems as one
+      large host (*initiator*).
+      
+      The SAN is zoned such that the application servers cannot "see" the
+      back-end storage or controller. This configuration prevents any possible
+      conflict between IBM SAN Volume Controller and the application servers
+      that are trying to manage the back-end storage.
+    questions_and_answers:
+      - question: |
+          What does the IBM SAN Volume controller manage?
+        answer: |
+          It manages several back-end storage controllers or locally attached disks.
+      - question: |
+          What can see the logical disk images?
+        answer: |
+          They can be seen by application servers and workstations.
+      - question: |
+          How does it present itself to hosts?
+        answer: |
+          It presents itself as a SCSI target and to storage systems as one large SCSI initiator.
+  - context: |
+      #### Nodes
+
+      Each IBM SAN Volume Controller hardware unit is called a *node*. Each
+      node is an individual server in an IBM SAN Volume Controller clustered
+      system on which the Storage Virtualize software runs. The node provides
+      the virtualization for a set of volumes, cache, and copy services
+      functions.
+
+      The IBM SAN Volume Controller nodes are deployed in pairs (*io_group*),
+      and one or multiple pairs constitute a *clustered system* or *system*. A
+      system can consist of one pair and a maximum of four pairs.
+
+      One of the nodes within the system is known as the *configuration node*.
+      The configuration node manages the configuration activity for the
+      system. If this node fails, the system chooses a new node to become the
+      configuration node.
+
+      Because the active nodes are installed in pairs, each node provides a
+      failover function to its partner node if a node fails.
+    questions_and_answers:
+      - question: |
+          How are the nodes deployed?
+        answer: |
+          They are deployed in pairs (*io_group*) and a system can have between one and four pairs maximum.
+      - question: |
+          What is the configuration node?
+        answer: |
+          The configuration node manages the system's configuration.
+      - question: |
+          What is a node?
+        answer: |
+          It is an IBM SAN Controller hardware unit.
+  - context: |
+      #### I/O groups
+
+      Each pair of IBM SAN Volume Controller nodes is also referred to as an
+      *I/O group*. An IBM SAN Volume Controller clustered system can have 1 -
+      4 I/O groups.
+
+      A specific *volume* is always presented to a host server by a single I/O
+      group of the system. The I/O group can be changed.
+
+      When a host server performs I/O to one of its volumes, all the I/Os for
+      a specific volume are directed to one specific I/O group in the system.
+      Under normal conditions, the I/Os for that specific volume are always
+      processed by the same node within the I/O group. This node is referred
+      to as the *preferred node* for this specific volume.
+
+      Both nodes of an I/O group act as the preferred node for their own
+      specific subset of the total number of volumes that the I/O group
+      presents to the host servers. However, both nodes also act as failover
+      nodes for their respective partner node within the I/O group. Therefore,
+      a node takes over the I/O workload from its partner node when required.
+    questions_and_answers:
+      - question: |
+          Can an I/O group be changed?
+        answer: |
+          Yes, it can be changed.
+      - question: |
+          Which nodes act as the preferred node?
+        answer: |
+          Both of the nodes of an I/O group act as preferred nodes for their own specific
+          subset of the total volumes presented by that the I/O Group to the host servers.
+      - question: |
+          Which node is the failover node?
+        answer: |
+          Both nodes act as failover nodes and they take over their respective
+          partners I/O workload.
+  - context: |
+      The system or clustered system consists of 1 - 4 I/O groups. Specific
+      configuration limitations are then set for the entire system. For
+      example, the maximum number of volumes that is supported per system is
+      10,000, or the maximum capacity of MDisks that is supported is
+
+      \~28 PiB (32 PB) per system.
+
+      All configuration, monitoring, and service tasks are performed at the
+      system level. Configuration settings are replicated to all nodes in the
+      system. To facilitate these tasks, a management IP address is set for
+      the system.
+
+      A process is provided to back up the system configuration data on to
+      storage so that it can be restored if a disaster occurs. This method
+      does not back up application data. Only the
+    questions_and_answers:
+      - question: |
+          How many volumes can be supported per system?
+        answer: |
+          The maximum number of volumes that can be supported per system is 10,000.
+      - question: |
+          How many I/O groups are in a cluster?
+        answer: |
+          There are one to four I/O groups per cluster.
+      - question: |
+          Where are configuration, monitoring and service tasks performed?
+        answer: |
+          They are performed at the system level using a management IP
+          address that is set for the system.
+  - context: |
+      #### Cache
+
+      The primary benefit of storage cache is to improve I/O response time.
+      Reads and writes to a magnetic disk drive experience seek time and
+      latency time at the drive level, which can result in 1 ms - 10 ms of
+      response time (for an enterprise-class disk).
+
+      Consider the following points:
+
+      -   The IBM SAN Volume Controller Model SA2 and SV2 features 128 GB of
+          memory with options for 768 GB of memory in a 2U 19-inch rack mount
+          enclosure.
+
+      -   The IBM SAN Volume Controller Model SV3 features 512 GB of memory
+          with options for 1536 GB of memory in a 2U 19-inch rack mount
+          enclosure.
+
+      The IBM SAN Volume Controller provides a flexible cache model as
+      described next.
+
+      Cache is allocated in 4 kibibyte (KiB) segments. A *segment* holds part
+      of one track. A *track* is the unit of locking and destaging granularity
+      in the cache. The cache virtual track size is
+
+      32 KiB (eight segments).
+    questions_and_answers:
+      - question: |
+          What is the benefit of a storage cache?
+        answer: |
+          A storage cache improves I/O response times.  It does this
+          by servicing reads and writes from memory rather than the disk.
+          This reduces latency and therefore improves response time.
+      - question: |
+          What is the maximum amount of memory that can be installed as cache?
+        answer: |
+          It depend ion which model you have. The SA2 abd SV2 can have 128 GB - 768 GB
+          of memory. The SV3 can have 512 GB - 1,536 GB of memory.
+      - question: |
+          What is the size of a segment?
+        answer: |
+          Cache is allocated in 4 KiB segments.
+document_outline: |
+  This IBM® Redbooks® publication captures several best practices and describes
+  the performance gains that can be achieved by implementing the IBM Storage
+  FlashSystem® and IBM SAN Volume Controller (SVC) products running IBM Storage
+  Virtualize 8.6. These practices are based on field experience.
+document:
+  repo: https://github.com/kenrobson/taxonomy
+  commit: 
+  patterns:
+  - storage_best_practices.xml
